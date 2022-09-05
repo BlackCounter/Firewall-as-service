@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="jquery-ui.css" type="text/css"/>
+		<link rel="stylesheet" id="theme" href="theme/Silver.css" type="text/css"/>
+
+		<script type="text/javascript" src="jquery.min.js"></script> 
+		<script type="text/javascript" src="jquery-ui.min.js"></script> 
+		<script type="text/javascript" src="template.js"></script>
+		<script type="text/javascript" src="tools.js"></script>
+		<script type="text/javascript" src="client.js"></script>
+
+		<title>iptables</title>
+	</head>
+
+	<body>
+
+		<div class="error"></div>
+		<div class="info"></div>
+
+		<div class="content">
+			<ul class="tabs mainmenu">
+				<li>
+					<a class="item" onclick="rules.showListWithPath('input', 'filter');">INPUT</a>
+					<ul class="dropdown" style="display: none;">
+						<li><a class="item" onclick="rules.showListWithPath('input', 'filter');">filter</a></li>
+						<li><a class="item" onclick="rules.showListWithPath('input', 'mangle');">mangle</a></li>
+					</ul>
+				</li>
+				<li>
+					<a class="item" onclick="rules.showListWithPath('output', 'filter');">OUTPUT</a>
+					<ul class="dropdown" style="display: none;">
+						<li><a class="item" onclick="rules.showListWithPath('output', 'filter');">filter</a></li>
+						<li><a class="item" onclick="rules.showListWithPath('output', 'nat');">nat</a></li>
+						<li><a class="item" onclick="rules.showListWithPath('output', 'mangle');">mangle</a></li>
+					</ul>
+				</li>
+				<li>
+					<a class="item" onclick="rules.showListWithPath('forward', 'filter');">FORWARD</a>
+					<ul class="dropdown" style="display: none;">
+						<li><a class="item" onclick="rules.showListWithPath('forward', 'filter');">filter</a></li>
+						<li><a class="item" onclick="rules.showListWithPath('forward', 'mangle');">mangle</a></li>
+					</ul>
+				</li>
+				<li>
+					<a class="item" onclick="rules.showListWithPath('prerouting', 'nat');">PREROUTING</a>
+					<ul class="dropdown" style="display: none;">
+						<li><a class="item" onclick="rules.showListWithPath('prerouting', 'nat');">nat</a></li>
+						<li><a class="item" onclick="rules.showListWithPath('prerouting', 'mangle');">mangle</a></li>
+					</ul>
+				</li>
+				<li>
+					<a class="item" onclick="rules.showListWithPath('postrouting', 'nat');">POSTROUTING</a>
+					<ul class="dropdown" style="display: none;">
+						<li><a class="item" onclick="rules.showListWithPath('postrouting', 'nat');">nat</a></li>
+						<li><a class="item" onclick="rules.showListWithPath('postrouting', 'mangle');">mangle</a></li>
+					</ul>
+				</li>
+				<li>
+					<a class="item">Custom ↓</a>
+					<ul class="dropdown" style="display: none;" id="customchains">
+						
+					</ul>
+				</li>
+			</ul>
+
+			<div class="chainpath" id="chainpath"></div>
+
+			<table class="main">
+				<thead>
+					<tr><th class="id">ID</th><th class="mon">pkts</th><th class="mon">bytes</th><th class="rule">RULE</th><th class="cmd">CMD</th></tr>
+				</thead>
+				<tbody id="main">
+
+				</tbody>
+			</table>
+
+			<div class="tools">
+				<a class="button" href="/logout" id="logout" style="display: none;">Logout <img class="icon" src="/img/logout.png"/></a>
+				<a class="button" onclick="tools.showTCPDump();" title="Show TCP dump console">TcpDump <img class="icon" src="/img/tcpdump.png"/></a>
+				<a class="button" onclick="tools.showLogs();" title="Show system logs">SysLogs <img class="icon" src="/img/logs.png"/></a>
+				<a class="button" onclick="tools.load();" title="Load rules from file">Load <img class="icon" src="/img/load.png"/></a>
+				<a class="button" onclick="tools.save();" title="Save rules into file">Save <img class="icon" src="/img/save.png"/></a>
+				<a class="button" onclick="tools.settingsDlg();" title="Show settings dialog">Settings <img class="icon" src="/img/settings.png"/></a>
+				<a class="button" onclick="rules.resetCounters();" title="Reset counters for current chain">Reset <img class="icon" src="/img/reset.png"/></a>
+			</div>
+
+			<div class="settings">
+				<div id="user-select-category">
+					<div class="item" id="page1" onclick="tools.selectPage(1);"><img class="item-icon" src="/img/settings.png"/> Global</div>
+					<div class="item" id="page2" onclick="tools.selectPage(2)"><img class="item-icon" src="/img/lan.png"/> Networks map</div>
+					<div class="item" id="page3" onclick="tools.selectPage(3)"><img class="item-icon" src="/img/portmap.png"/> Ports map</div>
+				</div>
+				<div id="settings-page1" style="display: block;">
+					<table width="100%">
+						<tr><td colspan="2" class="splitter">Paths</td></tr>
+						<tr>
+							<td>Save rule path</td><td><input class="param" type="text" id="savePath"/></td>
+						</tr>
+						<tr><td colspan="2" class="splitter">Appearance</td></tr>
+						<tr>
+							<td>Theme</td><td><select id="themeSelector"></select></td>
+						</tr>
+						<tr><td colspan="2" class="splitter">Security</td></tr>
+						<tr>
+							<td>Login</td><td><input class="param" type="text" id="user"/></td>
+						</tr>
+						<tr>
+							<td>Password</td><td><input class="param" type="password" id="pass" title="Leave this param empty to cancel the authorization"/></td>
+						</tr>
+					</table>
+				</div>
+				<div id="settings-page2" style="display: none;">
+					<table width="100%" id="lans" class="main">
+						<tr><th class="cmd">Network</th><th class="rule">Alias</th><th class="cmd"></th></tr>
+					</table>
+					<div class="tools"><a class="button" onclick="tools.addLan();">Add lan</a></div>
+				</div>
+				<div id="settings-page3" style="display: none;">
+					<table width="100%" id="ports" class="main">
+						<tr><th class="cmd">Port</th><th class="rule">Alias</th><th class="cmd"></th></tr>
+					</table>
+					<div class="tools"><a class="button" onclick="tools.addPort();">Add port</a></div>
+				</div>
+			</div>
+			
+			<div class="addchain">
+				<form>
+					<table class="main">
+						<tr><td class="cmd">Name:</td><td><input type="text" id="chainname"/></td></tr>
+						<tr><td class="cmd">Table:</td><td><select id="chaintable"><option value="filter">filter</option><option value="nat">nat</option><option value="mangle">mangle</option></select></td></tr>
+					</table>
+				</form>
+			</div>
+			<div class="dialog" id="makeRule">
+				<table class="" id="ruleTable">
+				</table>
+			</div>
+			<div class="dialog" id="syslog">
+				<div id="logs" class="logpanel">
+					
+				</div>
+			</div>
+			<div class="dialog" id="tcpdump">
+				<div class="content">
+					<div class="params">
+						<span>Dev:</span>
+						<input id="eth" placeholder="eth0">
+						<span>Src:</span>
+						<input id="src" placeholder="127.0.0.1">
+						<span>Dest:</span>
+						<input id="dst" placeholder="127.0.0.1">
+						<span>Port:</span>
+						<input id="port" placeholder="80">
+						<button onclick="tools.dumpParams();">Apply</button>
+						<button onclick='$("#dump").html("");'>Clear</button>
+					</div>
+					<div id="dump" class="logpanel">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+</html>
