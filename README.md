@@ -33,3 +33,11 @@ node server.js
 
 User: admin
 Pass: (empty)
+
+* sponsorship
+## please donate if this repo is usefull ##
+```bash
+
+saeedbahmanabadi --BlackCounter--
+```
+
