@@ -35,9 +35,8 @@ User: admin
 Pass: (empty)
 
 * sponsorship
-## please donate if this repo is usefull ##
+## Please Become Sponsor Of This Product ##
 ```bash
-
-saeedbahmanabadi --BlackCounter--
+Firewall-as-service
 ```
 
