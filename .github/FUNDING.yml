@@ -1,9 +1,9 @@
 # These are supported funding model platforms
 
 github: BlackCounter, mariam-asaD
-patreon: BlackCounter
-open_collective: BlackCounter
-ko_fi: Firewall-as-service
+patreon:
+open_collective: 
+ko_fi: 
 tidelift: 
 community_bridge: 
 liberapay: # Replace with a single Liberapay username
