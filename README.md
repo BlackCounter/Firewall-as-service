@@ -1,7 +1,7 @@
 # Firewall-as-service
 Firewall-as-service
 
-
+[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
 ### Howto install ###
 
 In first time you need to Download and install Node.js
