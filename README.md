@@ -1,10 +1,6 @@
 # Firewall-as-service
 Firewall-as-service
-<!-- Copy-paste in your Readme.md file -->
-
-<!-- href = "https://github.com/BlackCounter/Firewall-as-service/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo = BlackCounter/Firewall-as-service"/>
--->
+ 
 
  ### Howto install ###
 
